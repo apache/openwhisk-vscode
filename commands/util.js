@@ -42,10 +42,23 @@ function setLog(_log) {
     log = _log;
 }
 
+function printOpenWhiskError(error) {
+    log.appendLine("\nERROR: "+error.toString());
+    if (error.error.activationId) {
+        log.appendLine("activationId: "+error.error.activationId);
+    }
+    if (error.error.logs && (error.error.logs.length > 0)) {
+        for (var x=0; x<error.error.logs.length; x++) {
+            log.appendLine(error.error.logs[x]);
+        }
+    }
+}
+
 module.exports = {
     pad:pad,
     appendHeading:appendHeading,
     appendEntry:appendEntry,
     formatQualifiedName:formatQualifiedName,
-    setLog:setLog
+    setLog:setLog,
+    printOpenWhiskError: printOpenWhiskError
 }

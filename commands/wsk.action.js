@@ -52,7 +52,9 @@ function list() {
         for (var x=0; x<actions.length; x ++){
                 util.appendEntry(actions[x]);	
         }
-    })
+    }).catch(function(error) {
+        util.printOpenWhiskError(error);
+    });
 }
 
 function getList() {
@@ -103,11 +105,16 @@ function invokeAction(params) {
             actionName: actionToInvoke,
             blocking:true,
             namespace: namespace
-        }).then(function(result) {
+        })
+        .then(function(result) {
             var totalTime = startTime - (new Date().getTime());
             clearInterval(activityInterval);
             log.appendLine("\n"+JSON.stringify(result.response, null, 4));
             log.appendLine(">> completed in " + (-totalTime) + "ms");
+        })
+        .catch(function(error) {
+            clearInterval(activityInterval);
+            util.printOpenWhiskError(error);
         });
     });
 }
@@ -115,10 +122,8 @@ function invokeAction(params) {
 
 
 function createAction(params) {
-        
-    
-    if (vscode.window.activeTextEditor == undefined || 
-    vscode.window.activeTextEditor.document == undefined) {
+       
+    if (vscode.window.activeTextEditor == undefined || vscode.window.activeTextEditor.document == undefined) {
         vscode.window.showWarningMessage('Must have a document open for editing.  The currently focused document will be used to create the OpenWhisk action.');
         return;
     }
@@ -151,59 +156,73 @@ function createAction(params) {
         .then(function(result) {
             log.appendLine("OpenWhisk action created: " + util.formatQualifiedName(result));
             vscode.window.showInformationMessage("OpenWhisk action created: " + util.formatQualifiedName(result));
+        })
+        .catch(function(error) {
+            util.printOpenWhiskError(error);
         });
     });
     
 }
 
 function updateAction(params) {
-          
-    
-    if (vscode.window.activeTextEditor == undefined || 
-    vscode.window.activeTextEditor.document == undefined) {
+        
+    if (vscode.window.activeTextEditor == undefined || vscode.window.activeTextEditor.document == undefined) {
         vscode.window.showWarningMessage('Must have a document open for editing.  The currently focused document will be used to create the OpenWhisk action.');
         return;
     }
     
+    var YES = "Yes";
+    var NO = "No";
+    
+    
     vscode.window.showQuickPick(getListAsStringArray(), {prompt:"Select an action to update:"})
     .then(function(action){
         
-        if (action == undefined) {
-            return;
-        }
-        
-        var actionString = action.toString();
-        var startIndex = actionString.indexOf("/");
-        var namespace = actionString.substring(0, startIndex);
-        var actionToUpdate = actionString.substring(startIndex+1);
-        
-        log.show(true);
-        log.appendLine("\n$ wsk action update " + actionToUpdate);
-    
-        log.appendLine("Creating a new action using the currently open document: " + vscode.window.activeTextEditor.document.uri);
-        
-        var options = {
-            actionName: actionToUpdate, 
-            action: vscode.window.activeTextEditor.document.getText()
-        };
-        
-        var swiftExt = ".swift";
-        var lastIndex = vscode.window.activeTextEditor.document.uri.fsPath.lastIndexOf(swiftExt);
-        if (lastIndex == vscode.window.activeTextEditor.document.uri.fsPath.length - swiftExt.length) {
-            //it's a swift file, handle it differently
-            options.action = { exec: { kind: 'swift:3', code: options.action }}
-        }
-        
-        ow.actions.update(options)
-        .then(function(result) {
-            log.appendLine("OpenWhisk action updated: " + util.formatQualifiedName(result));
-            vscode.window.showInformationMessage("OpenWhisk action updated: " + util.formatQualifiedName(result));
+        vscode.window.showWarningMessage("Are you sure you want to overwrite " + action, YES, NO)
+        .then( function(selection) {
+            if (selection === YES) {
+                
+                if (action == undefined) {
+                    return;
+                }
+                
+                var actionString = action.toString();
+                var startIndex = actionString.indexOf("/");
+                var namespace = actionString.substring(0, startIndex);
+                var actionToUpdate = actionString.substring(startIndex+1);
+                
+                log.show(true);
+                log.appendLine("\n$ wsk action update " + actionToUpdate);
+            
+                log.appendLine("Creating a new action using the currently open document: " + vscode.window.activeTextEditor.document.uri);
+                
+                var options = {
+                    actionName: actionToUpdate, 
+                    action: vscode.window.activeTextEditor.document.getText()
+                };
+                
+                var swiftExt = ".swift";
+                var lastIndex = vscode.window.activeTextEditor.document.uri.fsPath.lastIndexOf(swiftExt);
+                if (lastIndex == vscode.window.activeTextEditor.document.uri.fsPath.length - swiftExt.length) {
+                    //it's a swift file, handle it differently
+                    options.action = { exec: { kind: 'swift:3', code: options.action }}
+                }
+                
+                ow.actions.update(options)
+                .then(function(result) {
+                    log.appendLine("OpenWhisk action updated: " + util.formatQualifiedName(result));
+                    vscode.window.showInformationMessage("OpenWhisk action updated: " + util.formatQualifiedName(result));
+                })
+                .catch(function(error) {
+                    util.printOpenWhiskError(error);
+                });
+            }
         });
     });
 }
 
 function deleteAction(params) {
-        vscode.window.showQuickPick(getListAsStringArray(), {prompt:"Select an action to delete:"})
+    vscode.window.showQuickPick(getListAsStringArray(), {prompt:"Select an action to delete:"})
     .then(function(action){
         
         if (action == undefined) {
@@ -233,17 +252,18 @@ function deleteAction(params) {
                     console.log(result);
                     log.appendLine("OpenWhisk action deleted: " + util.formatQualifiedName(result));
                     vscode.window.showInformationMessage("OpenWhisk action updated: " + util.formatQualifiedName(result));
+                })
+                .catch(function(error) {
+                    util.printOpenWhiskError(error);
                 });
             }
         });
-        
     });
 }
 
 function getAction(params) {
         
     //todo: determine between sequences and specific actions.  right now both are treated teh same
-    
     
     vscode.window.showQuickPick( getListAsStringArray(), {prompt:"Select an action to retrieve:"}).then( function (action) {
         
@@ -272,6 +292,8 @@ function getAction(params) {
             var totalTime = startTime - (new Date().getTime());;
             clearInterval(activityInterval);
             log.appendLine(">> completed in " + (-totalTime) + "ms")
+            
+            log.appendLine(JSON.stringify(result,  null, 4))
             
             //console.log(vscode.workspace.rootPath);
             
@@ -305,7 +327,6 @@ function getAction(params) {
                         
                         vscode.workspace.openTextDocument(path)
                         .then(function(document) {
-                            //console.log(document)
                             vscode.window.showTextDocument(document);
                             vscode.window.showInformationMessage('Successfully imported ' + importDirectory + fileName);
                             log.appendLine('Successfully imported file to ' + path);
@@ -314,6 +335,9 @@ function getAction(params) {
                     })
                 });
             });
+        })
+        .catch(function(error) {
+            util.printOpenWhiskError(error);
         });
     });
 }
@@ -321,15 +345,16 @@ function getAction(params) {
 
 function newAction(params) {
        
-    
-    vscode.window.showQuickPick( ["Node.js", "Swift"], {prompt:"Select the type of action:"}).then( function (action) {
+    var NODE = "Node.js",
+        SWIFT = "Swift";
+    vscode.window.showQuickPick( [NODE, SWIFT], {prompt:"Select the type of action:"}).then( function (action) {
         
         if (action == undefined) {
             return;
         }
         
         var template = "";
-        if (action == "Node.js") {
+        if (action == NODE) {
             template = nodeTemplate;
         } else {
             template = swiftTemplate;
@@ -342,7 +367,7 @@ function newAction(params) {
             
             var buffer = new Buffer(template);
             var fileName = "newAction";
-            if (action == "Node.js") {
+            if (action == NODE) {
                 fileName += ".js"
             } else {
                 fileName += ".swift"
