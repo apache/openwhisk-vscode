@@ -74,7 +74,7 @@
     "vscode": "^0.11.0"
   },
   "dependencies": {
-    "openwhisk": "^2.0.0",
+    "openwhisk": "https://github.com/triceam/openwhisk-client-js/tarball/master",
     "request-promise": "^3.0.0"
   }
 }
