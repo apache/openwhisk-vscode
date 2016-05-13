@@ -1,12 +1,8 @@
-# README
-## This is the README for your extension "vscode-openwhisk" 
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+# openwhisk-vscode-extension
 
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
+This is a prototype extension for Visual Studio Code https://code.visualstudio.com/ that enables complete round trip cycles for authoring OpenWhisk actions inside the editor.  The key point for this extension is that it has full round trip for open whisk actions (list, create new local, create new remote, update, import from remote system, invoke, etc…) without ever leaving the IDE and makes dev cycles far shorter and easier.  It also works for both Swift and JS actions on Windows, Mac, and Linux. 
 
-## Preview of VS Code OpenWhisk extension here:
+Preview of VS Code OpenWhisk extension here:
 
 [![VS Code OpenWhisk extension video](https://img.youtube.com/vi/CJxWQT13zyo/0.jpg)](https://www.youtube.com/watch?v=CJxWQT13zyo)
 
