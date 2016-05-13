@@ -1,0 +1,80 @@
+{
+  "name": "vscode-openwhisk",
+  "displayName": "VSCode-OpenWhisk",
+  "description": "",
+  "version": "0.0.1",
+  "publisher": "AndrewTrice",
+  "engines": {
+    "vscode": "^0.10.10"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.wsk.list",
+    "onCommand:extension.wsk.help",
+    "onCommand:extension.wsk.action",
+    "onCommand:extension.wsk.action.list",
+    "onCommand:extension.wsk.action.invoke",
+    "onCommand:extension.wsk.action.create",
+    "onCommand:extension.wsk.action.update",
+    "onCommand:extension.wsk.action.delete",
+    "onCommand:extension.wsk.action.get",
+    "onCommand:extension.wsk.action.new"
+  ],
+  "main": "./extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.wsk.list",
+        "title": "wsk list"
+      },
+      {
+        "command": "extension.wsk.help",
+        "title": "wsk help"
+      },
+      {
+        "command": "extension.wsk.action",
+        "title": "wsk action"
+      },
+      {
+        "command": "extension.wsk.action.list",
+        "title": "wsk action list"
+      },
+      {
+        "command": "extension.wsk.action.invoke",
+        "title": "wsk action invoke"
+      },
+      {
+        "command": "extension.wsk.action.create",
+        "title": "wsk action create"
+      },
+      {
+        "command": "extension.wsk.action.update",
+        "title": "wsk action update"
+      },
+      {
+        "command": "extension.wsk.action.delete",
+        "title": "wsk action delete"
+      },
+      {
+        "command": "extension.wsk.action.get",
+        "title": "wsk action get"
+      },
+      {
+        "command": "extension.wsk.action.new",
+        "title": "wsk action new"
+      }
+    ]
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "vscode": "^0.11.0"
+  },
+  "dependencies": {
+    "openwhisk": "^2.0.0",
+    "request-promise": "^3.0.0"
+  }
+}
