@@ -20,7 +20,11 @@
     "onCommand:extension.wsk.action.update",
     "onCommand:extension.wsk.action.delete",
     "onCommand:extension.wsk.action.get",
-    "onCommand:extension.wsk.action.new"
+    "onCommand:extension.wsk.action.new",
+    "onCommand:extension.wsk.util.bluemix",
+    "onCommand:extension.wsk.property.get",
+    "onCommand:extension.wsk.property.set",
+    "onCommand:extension.wsk.property.unset"
   ],
   "main": "./extension",
   "contributes": {
@@ -64,6 +68,22 @@
       {
         "command": "extension.wsk.action.new",
         "title": "wsk action new"
+      },
+      {
+        "command": "extension.wsk.util.bluemix",
+        "title": "wsk util bluemix"
+      },
+      {
+        "command": "extension.wsk.property.get",
+        "title": "wsk property get"
+      },
+      {
+        "command": "extension.wsk.property.set",
+        "title": "wsk property set"
+      },
+      {
+        "command": "extension.wsk.property.unset",
+        "title": "wsk property unset"
       }
     ]
   },
@@ -74,6 +94,7 @@
     "vscode": "^0.11.0"
   },
   "dependencies": {
+    "open": "0.0.5",
     "openwhisk": "https://github.com/triceam/openwhisk-client-js/tarball/master",
     "request-promise": "^3.0.0"
   }

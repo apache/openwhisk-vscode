@@ -31,12 +31,14 @@ function defaultAction(params) {
 }
 
 function list() {
-    return ow.triggers.list().then(function (rules) {
+    return ow.rules.list().then(function (rules) {
         util.appendHeading("rules");
         for (var x=0; x<rules.length; x ++){
                 util.appendEntry(rules[x]);	
         }
-    })
+    }).catch(function(error) {
+        log.appendLine(error.toString())
+    });
 }
 
 module.exports = {

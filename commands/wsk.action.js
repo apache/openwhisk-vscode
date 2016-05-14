@@ -62,6 +62,8 @@ function getList() {
         return ow.actions.list().then(function (_actions) {
             actions = _actions;
             fulfill(actions);
+        }).catch(function(error) {
+            log.appendLine(error.toString())
         });
     });
 }

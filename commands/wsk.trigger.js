@@ -37,7 +37,9 @@ function list() {
         for (var x=0; x<triggers.length; x ++){
                 util.appendEntry(triggers[x]);	
         }
-    })
+    }).catch(function(error) {
+        log.appendLine(error.toString())
+    });
 }
 
 module.exports = {

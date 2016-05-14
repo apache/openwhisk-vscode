@@ -34,7 +34,9 @@ function list() {
         for (var x=0; x<packages.length; x ++){
                 util.appendEntry(packages[x]);	
         }
-    })
+    }).catch(function(error) {
+        log.appendLine(error.toString())
+    });
 }
 
 module.exports = {
