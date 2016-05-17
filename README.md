@@ -4,9 +4,9 @@ This is a prototype extension for Visual Studio Code https://code.visualstudio.c
 
 Preview of VS Code OpenWhisk extension here:
 
-[![VS Code OpenWhisk extension video](https://img.youtube.com/vi/CJxWQT13zyo/0.jpg)](https://www.youtube.com/watch?v=CJxWQT13zyo)
+[![VS Code OpenWhisk extension video](https://img.youtube.com/vi/aPsLXvphkro/0.jpg)](https://www.youtube.com/watch?v=aPsLXvphkro)
 
-https://youtu.be/CJxWQT13zyo
+https://youtu.be/aPsLXvphkro
 
 ## Usage
 
