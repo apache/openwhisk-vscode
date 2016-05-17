@@ -8,3 +8,35 @@ Preview of VS Code OpenWhisk extension here:
 
 https://youtu.be/CJxWQT13zyo
 
+## Usage
+
+OpenWhisk command can be invoked from the Command Palette using the prefix `wsk`.  You can invoke the Command Palette by pressing `F1` or by using the key combination `CMD Shift P` (OS X, there is an equivalent for Windows/Linux).
+
+![Command Palette Screenshot](./github-assets/screenshot.png)
+
+## Configuration
+
+Once you have the extension installed, you will have to run `wsk property set` inside of VS Code to set the auth and namespace values.  These values can be retrieved from either the OpenWhisk CLI using `wsk property get` or from the web interface.
+
+## Util Commands
+
+### `wsk` commands:
+     bluemix             launch OpenWhisk console on Bluemix
+     docs                open OpenWhisk docs
+     property set        set property
+     property unset      unset property
+     property get        get property
+     action              see available commands for OpenWhisk actions
+
+### `wsk action` commands:
+     init                create new action boilerplate file
+     create              create new action
+     sequence            create a new sequence of actions
+     update              update an existing action
+     invoke              invoke action
+     get                 get action
+     delete              delete action
+     list                list all actions
+     rest                display CURL rest invocation parameters
+     
+     

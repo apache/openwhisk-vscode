@@ -20,11 +20,14 @@
     "onCommand:extension.wsk.action.update",
     "onCommand:extension.wsk.action.delete",
     "onCommand:extension.wsk.action.get",
-    "onCommand:extension.wsk.action.new",
+    "onCommand:extension.wsk.action.init",
+    "onCommand:extension.wsk.action.rest",
     "onCommand:extension.wsk.util.bluemix",
+    "onCommand:extension.wsk.util.docs",
     "onCommand:extension.wsk.property.get",
     "onCommand:extension.wsk.property.set",
-    "onCommand:extension.wsk.property.unset"
+    "onCommand:extension.wsk.property.unset",
+    "onCommand:extension.wsk.action.sequence.create"
   ],
   "main": "./extension",
   "contributes": {
@@ -32,6 +35,10 @@
       {
         "command": "extension.wsk.list",
         "title": "wsk list"
+      },
+      {
+        "command": "extension.wsk.help",
+        "title": "wsk"
       },
       {
         "command": "extension.wsk.help",
@@ -54,6 +61,10 @@
         "title": "wsk action create"
       },
       {
+        "command": "extension.wsk.action.sequence.create",
+        "title": "wsk sequence create"
+      },
+      {
         "command": "extension.wsk.action.update",
         "title": "wsk action update"
       },
@@ -66,12 +77,20 @@
         "title": "wsk action get"
       },
       {
-        "command": "extension.wsk.action.new",
-        "title": "wsk action new"
+        "command": "extension.wsk.action.init",
+        "title": "wsk action init"
+      },
+      {
+        "command": "extension.wsk.action.rest",
+        "title": "wsk action REST"
       },
       {
         "command": "extension.wsk.util.bluemix",
-        "title": "wsk util bluemix"
+        "title": "wsk bluemix"
+      },
+      {
+        "command": "extension.wsk.util.docs",
+        "title": "wsk docs"
       },
       {
         "command": "extension.wsk.property.get",

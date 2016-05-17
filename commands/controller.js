@@ -25,13 +25,13 @@ function init(context) {
     util.setLog(log);
     
 	wskProperty.register(ow, context, log);
-	wskLst.register(ow, context, log);
-	wskHelp.register(ow, context, log);
-	wskAction.register(ow, context, log);
-	wskPackage.register(ow, context, log);
-	wskTrigger.register(ow, context, log);
-	wskRule.register(ow, context, log);
-	wskUtil.register(ow, context, log);
+	wskLst.register(ow, context, log, wskProperty);
+	wskHelp.register(ow, context, log, wskProperty);
+	wskAction.register(ow, context, log, wskProperty);
+	wskPackage.register(ow, context, log, wskProperty);
+	wskTrigger.register(ow, context, log, wskProperty);
+	wskRule.register(ow, context, log, wskProperty);
+	wskUtil.register(ow, context, log, wskProperty);
 }
 
 module.exports = {

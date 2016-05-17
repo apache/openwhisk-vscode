@@ -11,6 +11,7 @@ let CONFIG_DIR = path.join(process.env.HOME, '.openwhisk/');
 
 let log;
 var ow;
+var props;
 
 var writeDelayTimeout = false;
 let WRITE_DELAY_MS = 500;
@@ -39,6 +40,16 @@ function register(_ow, context, _log) {
     context.subscriptions.push(setAction, getAction, unsetAction);
 }
 
+function validate() {
+    log.show(true);
+    if (config.auth =='' || config.namespace =='') {
+        log.appendLine("Please check OpenWhisk config. Use 'wsk property set' to specify missing values. ")
+        getAction();
+        return false;
+    }
+    return true;
+}
+
 function get(key) {
     if (config.hasOwnProperty(key)) {
         return config[key];
@@ -46,7 +57,7 @@ function get(key) {
     else return "";
 }
 
-function set(key, value) {
+function set(key, value, silent) {
     config[key] = value; 
     
     switch(key) {
@@ -54,19 +65,22 @@ function set(key, value) {
             ow.apiHost
     }
     updateOW();
-    setNeedsWrite();
-    log.appendLine(`set config: ${key}=${value}`);
+    setNeedsWrite(silent);
+    if (silent != true) {
+        log.appendLine(`set config: ${key}=${value}`);    
+    }
+    
 }
 
 function host() {
     return `https://${config.apiHost}/api/${config.apiVersion}/`;
 }
 
-function setNeedsWrite() {
+function setNeedsWrite(silent) {
     clearTimeout(writeDelayTimeout);
     setTimeout(function() {
         clearTimeout(writeDelayTimeout);
-        writeConfigurationFile();
+        writeConfigurationFile(silent);
     }, WRITE_DELAY_MS)
 }
 
@@ -84,7 +98,7 @@ function readConfigurationFile() {
     }
 }
 
-function writeConfigurationFile() {
+function writeConfigurationFile(silent) {
     var str = JSON.stringify(config);
     var buffer = new Buffer(str);
     
@@ -100,7 +114,9 @@ function writeConfigurationFile() {
         fs.write(fd, buffer, 0, buffer.length, null, function(err) {
             if (err) throw 'error writing file: ' + err;
             fs.close(fd, function() {
-                log.appendLine('Configuration saved in ' + CONFIG_FILE);
+                if (silent != true) {
+                    log.appendLine('Configuration saved in ' + CONFIG_FILE);   
+                }
             })
         });
         
@@ -173,5 +189,6 @@ module.exports = {
     register:register,
     get: get,
     set: set,
-    host: host
+    host: host,
+    validate:validate
 }

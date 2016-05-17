@@ -5,10 +5,12 @@ let util = require("./util.js");
 
 var log;
 var ow;
+var props;
 
-function register(_ow, context, _log) {
+function register(_ow, context, _log, _props) {
     ow = _ow;
     log = _log;
+    props = _props;
     
     var defaultDisposable = vscode.commands.registerCommand('extension.wsk.package', defaultAction);
     context.subscriptions.push(defaultDisposable);
@@ -29,6 +31,11 @@ function defaultAction(params) {
 }
 
 function list() {
+    
+    if (!props.validate()){
+        return;
+    }
+    
     return ow.packages.list().then(function (packages) {
         util.appendHeading("packages");
         for (var x=0; x<packages.length; x ++){
