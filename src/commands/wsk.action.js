@@ -334,7 +334,8 @@ function createSequenceAction(params) {
                         return;
                     }
                     else if (selectedActionStep != sequenceComplete) {
-                        sequenceActions.push(selectedActionStep);
+                        
+                        sequenceActions.push("/"+selectedActionStep);
                         selectSequenceActions(false);
                     }
                     else {
