@@ -1,6 +1,6 @@
 {
-  "name": "vscode-openwhisk",
-  "displayName": "VSCode-OpenWhisk",
+  "name": "openwhisk",
+  "displayName": "OpenWhisk",
   "description": "",
   "version": "0.0.1",
   "publisher": "AndrewTrice",
