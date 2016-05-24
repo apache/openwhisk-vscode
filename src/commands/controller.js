@@ -18,12 +18,12 @@ let log = vscode.window.createOutputChannel("OpenWhisk");
 
 
 function init(context) {
-    
-    //api key and namespace will be set when config values are loaded
-    ow = openwhisk({api: 'https://openwhisk.ng.bluemix.net/api/v1/', api_key: '', namespace: ''});
-    
-    util.setLog(log);
-    
+
+	//api key and namespace will be set when config values are loaded
+	ow = openwhisk({api: 'https://openwhisk.ng.bluemix.net/api/v1/', api_key: '', namespace: ''});
+
+	util.setLog(log);
+
 	wskProperty.register(ow, context, log);
 	wskLst.register(ow, context, log, wskProperty);
 	wskHelp.register(ow, context, log, wskProperty);
@@ -35,6 +35,6 @@ function init(context) {
 }
 
 module.exports = {
-  init: init,
-  ow: ow
+	init: init,
+	ow: ow
 };
