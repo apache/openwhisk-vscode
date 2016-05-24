@@ -29,7 +29,7 @@
     "onCommand:extension.wsk.property.unset",
     "onCommand:extension.wsk.action.sequence.create"
   ],
-  "main": "./extension",
+  "main": "./src/extension",
   "contributes": {
     "commands": [
       {
