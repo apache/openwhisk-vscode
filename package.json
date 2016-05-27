@@ -107,7 +107,8 @@
     ]
   },
   "scripts": {
-    "postinstall": "node ./node_modules/vscode/bin/install"
+     //TODO dirty fix to make this work, tests dont run in vscode for some reason
+     "postinstall": "rm -rf ./node_modules/openwhisk/test/"
   },
   "devDependencies": {
     "vscode": "^0.11.0"
