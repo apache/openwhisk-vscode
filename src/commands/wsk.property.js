@@ -4,10 +4,7 @@ var vscode = require('vscode');
 let fs = require('fs');
 var path = require('path');
 let util = require('./util.js');
-
-let CONFIG_FILE = path.join(process.env.HOME, '.openwhisk/vscode-config.json');
-let CONFIG_DIR = path.join(process.env.HOME, '.openwhisk/');
-
+var vscode = require('vscode');
 
 let log;
 var ow;
@@ -25,6 +22,31 @@ var config = {
 	namespace:'',
 	apiHost:'openwhisk.ng.bluemix.net',
 	apiVersion:'v1'
+}
+
+function userHome() {
+	if (vscode.env.isWindows) {
+		var homeDrive = process.env['HOMEDRIVE'];
+		var homePath = process.env['HOMEPATH'];
+		var home = path.join(homeDrive, homePath);
+		if (home === '') {
+			return process.env['USERPROFILE'];
+		}
+		else {
+			return home;
+		}
+	}
+	else {
+		return process.env['HOME'];
+	}
+}
+
+function configFile() {
+	return path.join(userHome(), '.openwhisk/vscode-config.json');
+}
+
+function configDir() {
+	return path.join(userHome(), '.openwhisk/');
 }
 
 function register(_ow, context, _log) {
@@ -85,9 +107,9 @@ function setNeedsWrite(silent) {
 }
 
 function readConfigurationFile() {
-	if (fs.existsSync(CONFIG_FILE)) {
+	if (fs.existsSync(configFile())) {
 		try {
-			var obj = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
+			var obj = JSON.parse(fs.readFileSync(configFile(), 'utf8'));
 			for (var key in obj) {
 				config[key] = obj[key];
 			}
@@ -102,11 +124,11 @@ function writeConfigurationFile(silent) {
 	var str = JSON.stringify(config);
 	var buffer = new Buffer(str);
 
-	if (!fs.existsSync(CONFIG_DIR)){
-		fs.mkdirSync(CONFIG_DIR);
+	if (!fs.existsSync(configDir())){
+		fs.mkdirSync(configDir());
 	}
 
-	fs.open(CONFIG_FILE, 'w', function(err, fd) {
+	fs.open(configFile(), 'w', function(err, fd) {
 		if (err) {
 			throw 'error opening file: ' + err;
 		}
@@ -115,7 +137,7 @@ function writeConfigurationFile(silent) {
 			if (err) throw 'error writing file: ' + err;
 			fs.close(fd, function() {
 				if (silent != true) {
-					log.appendLine('Configuration saved in ' + CONFIG_FILE);
+					log.appendLine('Configuration saved in ' + configFile());
 				}
 			})
 		});
