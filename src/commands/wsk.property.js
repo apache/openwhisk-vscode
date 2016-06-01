@@ -29,7 +29,7 @@ function userHome() {
 		var homeDrive = process.env['HOMEDRIVE'];
 		var homePath = process.env['HOMEPATH'];
 		var home = path.join(homeDrive, homePath);
-		if (home === '') {
+		if (homeDrive === undefined || homePath === undefined) {
 			return process.env['USERPROFILE'];
 		}
 		else {
