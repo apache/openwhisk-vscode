@@ -4,7 +4,6 @@ var vscode = require('vscode');
 let fs = require('fs');
 var path = require('path');
 let util = require('./util.js');
-var vscode = require('vscode');
 
 let log;
 var ow;
@@ -25,7 +24,7 @@ var config = {
 }
 
 function userHome() {
-	if (vscode.env.isWindows) {
+	if (/^win/.test(process.platform)) {
 		var homeDrive = process.env['HOMEDRIVE'];
 		var homePath = process.env['HOMEPATH'];
 		var home = path.join(homeDrive, homePath);
