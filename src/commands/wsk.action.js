@@ -149,7 +149,7 @@ function invokeAction(params) {
 			}
 
 			if (pString.length>0) {
-				invocationParams.params = parseParametersString(pString);
+				invocationParams.params = util.parseParametersString(pString);
 			}
 			ow.actions.invoke(invocationParams)
 			.then(function(result) {
@@ -164,26 +164,6 @@ function invokeAction(params) {
 			});
 		});
 	});
-}
-
-function parseParametersString(parameterString) {
-	var params = {};
-
-	var tokens = parameterString.split('-p ');
-
-	for (var x=0; x<tokens.length; x++) {
-		var token = tokens[x]
-		var firstSpace = token.indexOf(' ');
-		if (token.length >0 && firstSpace >= 0) {
-			var key = token.substring(0, firstSpace).trim();
-			var value = token.substring(firstSpace+1).trim();
-			params[key] = value;
-		}
-	}
-
-	console.log(params)
-
-	return params;
 }
 
 
@@ -249,17 +229,16 @@ function updateAction(params) {
 	var YES = 'Yes';
 	var NO = 'No';
 
-
 	vscode.window.showQuickPick(getListAsStringArray(), {placeHolder:'Select an action to update:'})
 	.then(function(action){
+		
+		if (action == undefined) {
+			return;
+		}
 
 		vscode.window.showWarningMessage('Are you sure you want to overwrite ' + action, YES, NO)
 		.then( function(selection) {
 			if (selection === YES) {
-
-				if (action == undefined) {
-					return;
-				}
 
 				var actionString = action.toString();
 				var startIndex = actionString.indexOf('/');
@@ -269,7 +248,7 @@ function updateAction(params) {
 				log.show(true);
 				log.appendLine('\n$ wsk action update ' + actionToUpdate);
 
-				log.appendLine('Creating a new action using the currently open document: ' + vscode.window.activeTextEditor.document.uri);
+				log.appendLine('Updating action ' + actionToUpdate + ' using the currently open document: ' + vscode.window.activeTextEditor.document.uri);
 
 				var options = {
 					actionName: actionToUpdate,
@@ -285,8 +264,9 @@ function updateAction(params) {
 
 				ow.actions.update(options)
 				.then(function(result) {
-					log.appendLine('OpenWhisk action updated: ' + util.formatQualifiedName(result));
-					vscode.window.showInformationMessage('OpenWhisk action updated: ' + util.formatQualifiedName(result));
+					var message = 'OpenWhisk action updated: ' + util.formatQualifiedName(result)
+					log.appendLine(message);
+					vscode.window.showInformationMessage(message);
 				})
 				.catch(function(error) {
 					util.printOpenWhiskError(error);
@@ -393,7 +373,7 @@ function deleteAction(params) {
 		var actionToDelete = actionString.substring(startIndex+1);
 
 		log.show(true);
-		log.appendLine('\n$ wsk action update ' + actionToDelete);
+		log.appendLine('\n$ wsk action delete ' + actionToDelete);
 
 		var options = {
 			actionName: actionToDelete
@@ -646,10 +626,10 @@ function restAction(params) {
 
 let nodeTemplate = 'var request = require(\'request\');\n' +
 	'\n' +
-	'function main(msg) {\n' +
+	'function main(args) {\n' +
 	'    var url = \'https://httpbin.org/get\';\n' +
 	'    request.get(url, function(error, response, body) {\n' +
-	'        whisk.done({msg: body});\n' +
+	'        whisk.done({response: body});\n' +
 	'    });\n' +
 	'    return whisk.async();\n' +
 	'}\n';
@@ -663,6 +643,7 @@ let swiftTemplate = '/**\n' +
 	'import KituraNet\n' +
 	'import Dispatch\n' +
 	'import Foundation\n' +
+	'import SwiftyJSON\n' +
 	'\n' +
 	'func main(args:[String:Any]) -> [String:Any] {\n' +
 	'\n' +
@@ -701,5 +682,6 @@ let swiftTemplate = '/**\n' +
 
 module.exports = {
 	register: register,
-	list:list
+	list:list,
+	getListAsStringArray:getListAsStringArray
 };

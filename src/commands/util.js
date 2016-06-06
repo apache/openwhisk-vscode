@@ -38,6 +38,17 @@ function formatQualifiedName(entry, qualified) {
 	return qualifiedName;
 }
 
+function parseQualifiedName(name) {
+	var nameString = name.toString();
+	var startIndex = nameString.indexOf('/');
+	var namespace = nameString.substring(0, startIndex);
+	var parsedName = nameString.substring(startIndex+1);
+	return {
+		"name":parsedName,
+		"namespace":namespace
+	};
+}
+
 function setLog(_log) {
 	log = _log;
 }
@@ -54,11 +65,33 @@ function printOpenWhiskError(error) {
 	}
 }
 
+function parseParametersString(parameterString) {
+	var params = {};
+
+	var tokens = parameterString.split('-p ');
+
+	for (var x=0; x<tokens.length; x++) {
+		var token = tokens[x]
+		var firstSpace = token.indexOf(' ');
+		if (token.length >0 && firstSpace >= 0) {
+			var key = token.substring(0, firstSpace).trim();
+			var value = token.substring(firstSpace+1).trim();
+			params[key] = value;
+		}
+	}
+
+	console.log(params)
+
+	return params;
+}
+
 module.exports = {
 	pad:pad,
 	appendHeading:appendHeading,
 	appendEntry:appendEntry,
 	formatQualifiedName:formatQualifiedName,
 	setLog:setLog,
-	printOpenWhiskError: printOpenWhiskError
+	printOpenWhiskError: printOpenWhiskError,
+	parseParametersString: parseParametersString, 
+	parseQualifiedName:parseQualifiedName
 }

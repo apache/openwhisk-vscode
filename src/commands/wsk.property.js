@@ -64,6 +64,7 @@ function register(_ow, context, _log) {
 function validate() {
 	log.show(true);
 	if (config.auth =='' || config.namespace =='') {
+		log.show(true);
 		log.appendLine('Please check OpenWhisk config. Use \'wsk property set\' to specify missing values. ')
 		getAction();
 		return false;
@@ -165,6 +166,7 @@ function setAction(params) {
 			if (!value) {
 				return;
 			}
+			log.show(true);
 			log.appendLine(`$ wsk property set ${property} ${value}`);
 			set(property, value);
 		});
@@ -174,6 +176,7 @@ function setAction(params) {
 
 function getAction(params) {
 
+	log.show(true);
 	log.appendLine('$ wsk property get');
 	var props = getAvailableProperties()
 	for (var x=0; x<props.length; x++) {
@@ -190,6 +193,7 @@ function unsetAction(params) {
 		if (!property) {
 			return;
 		}
+		log.show(true);
 		log.appendLine(`$ wsk property unset ${property}`);
 		set(property, undefined);
 	});
