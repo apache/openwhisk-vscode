@@ -11,6 +11,7 @@ let wskPackage = require("./wsk.package.js");
 let wskTrigger = require("./wsk.trigger.js");
 let wskRule = require("./wsk.rule.js");
 let wskUtil = require("./wsk.util.js");
+let wskActivation = require("./wsk.activation.js");
 let wskProperty = require("./wsk.property.js");
 
 var ow;
@@ -32,6 +33,7 @@ function init(context) {
 	wskTrigger.register(ow, context, log, wskProperty);
 	wskRule.register(ow, context, log, wskProperty);
 	wskUtil.register(ow, context, log, wskProperty);
+	wskActivation.register(ow, context, log, wskProperty);
 }
 
 module.exports = {

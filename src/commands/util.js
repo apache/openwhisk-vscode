@@ -29,6 +29,18 @@ function appendEntry(entry, qualified) {
 	log.appendLine( pad(qualifiedName, 66) + (entry.publish ? 'public':'private') + suffix);
 }
 
+function appendActivation(entry, qualified) {
+
+	var qualifiedName = formatQualifiedName(entry, qualified);
+	var suffix = ''
+
+	if ( entry.hasOwnProperty('binding') && entry.binding ) {
+		suffix = ' binding';
+	}
+
+	log.appendLine( pad(entry.activationId, 45) + entry.name);
+}
+
 function formatQualifiedName(entry, qualified) {
 	if (qualified == undefined) {
 		qualified = true;
@@ -93,5 +105,6 @@ module.exports = {
 	setLog:setLog,
 	printOpenWhiskError: printOpenWhiskError,
 	parseParametersString: parseParametersString, 
-	parseQualifiedName:parseQualifiedName
+	parseQualifiedName:parseQualifiedName,
+	appendActivation:appendActivation
 }

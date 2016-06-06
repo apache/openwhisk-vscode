@@ -43,7 +43,12 @@
     "onCommand:extension.wsk.rule.enable",
     "onCommand:extension.wsk.rule.disable",
     "onCommand:extension.wsk.rule.status",
-    "onCommand:extension.wsk.rule.get"
+    "onCommand:extension.wsk.rule.get",
+    "onCommand:extension.wsk.activation",
+    "onCommand:extension.wsk.activation.list",
+    "onCommand:extension.wsk.activation.get",
+    "onCommand:extension.wsk.activation.logs",
+    "onCommand:extension.wsk.activation.result"
   ],
   "main": "./extension",
   "contributes": {
@@ -193,6 +198,28 @@
       {
         "command": "extension.wsk.rule.get",
         "title": "wsk rule get"
+      },
+      
+      
+      {
+        "command": "extension.wsk.activation",
+        "title": "wsk activation"
+      },
+      {
+        "command": "extension.wsk.activation.list",
+        "title": "wsk activation list"
+      },
+      {
+        "command": "extension.wsk.activation.get",
+        "title": "wsk activation get"
+      },
+      {
+        "command": "extension.wsk.activation.logs",
+        "title": "wsk activation logs"
+      },
+      {
+        "command": "extension.wsk.activation.result",
+        "title": "wsk activation result"
       }
       
     ]
