@@ -609,8 +609,9 @@ function restAction(params) {
 			clearInterval(activityInterval);
 
 			var hash = new Buffer(props.get('auth')).toString('base64')
+			var parsedNamespace = util.parseQualifiedName(result.namespace)
 
-			var restEndpoint =`curl -d '{ 'arg': 'value' }' '${props.host()}namespaces/${result.namespace}/actions/${result.name}?blocking=true' -XPOST -H 'Authorization: Basic ${hash}' -H 'Content-Type: application/json'`;
+			var restEndpoint =`curl -d '{ "arg": "value" }' '${props.host()}namespaces/${parsedNamespace.namespace}/actions/${parsedNamespace.name}/${result.name}?blocking=true' -X POST -H 'Authorization: Basic ${hash}' -H 'Content-Type: application/json'`;
 
 			log.appendLine(`\nCURL REST invocation (You still need to set parameter key/value pairs):`);
 			log.appendLine(`-------------------------------------------------------------------------`);
@@ -621,7 +622,6 @@ function restAction(params) {
 		});
 	});
 }
-
 
 
 let nodeTemplate = 'var request = require(\'request\');\n' +
