@@ -50,7 +50,7 @@
     "onCommand:extension.wsk.activation.logs",
     "onCommand:extension.wsk.activation.result"
   ],
-  "main": "./extension",
+  "main": "./static-src/extension",
   "contributes": {
     "commands": [
       {
@@ -65,8 +65,6 @@
         "command": "extension.wsk.help",
         "title": "wsk help"
       },
-      
-      
       {
         "command": "extension.wsk.action",
         "title": "wsk action"
@@ -107,8 +105,8 @@
         "command": "extension.wsk.action.rest",
         "title": "wsk action REST"
       },
-      
-      
+
+
       {
         "command": "extension.wsk.util.bluemix",
         "title": "wsk bluemix"
@@ -117,8 +115,8 @@
         "command": "extension.wsk.util.docs",
         "title": "wsk docs"
       },
-      
-      
+
+
       {
         "command": "extension.wsk.property.get",
         "title": "wsk property get"
@@ -131,8 +129,8 @@
         "command": "extension.wsk.property.unset",
         "title": "wsk property unset"
       },
-      
-      
+
+
       {
         "command": "extension.wsk.trigger",
         "title": "wsk trigger"
@@ -161,8 +159,8 @@
         "command": "extension.wsk.trigger.fire",
         "title": "wsk trigger fire"
       },
-      
-      
+
+
       {
         "command": "extension.wsk.rule",
         "title": "wsk rule"
@@ -199,8 +197,8 @@
         "command": "extension.wsk.rule.get",
         "title": "wsk rule get"
       },
-      
-      
+
+
       {
         "command": "extension.wsk.activation",
         "title": "wsk activation"
@@ -221,7 +219,7 @@
         "command": "extension.wsk.activation.result",
         "title": "wsk activation result"
       }
-      
+
     ]
   },
   "scripts": {
