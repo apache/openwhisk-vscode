@@ -17,8 +17,8 @@ function register(_ow, context, _log, _props) {
 	var getDisposable = vscode.commands.registerCommand('extension.wsk.activation.get', getAction);
 	var logsDisposable = vscode.commands.registerCommand('extension.wsk.activation.logs', logsAction);
 	var resultDisposable = vscode.commands.registerCommand('extension.wsk.activation.result', resultAction);
-	
-	
+
+
 	context.subscriptions.push(defaultDisposable, listDisposable, getDisposable, logsDisposable,resultDisposable );
 }
 
@@ -58,7 +58,7 @@ function list() {
 	return getList().then(function (activations) {
 		util.appendHeading('activations');
 		for (var x=0; x<activations.length; x ++){
-		    util.appendActivation(activations[x]);
+			util.appendActivation(activations[x]);
 		}
 	}).catch(function(error) {
 		log.appendLine(error.toString())
@@ -69,11 +69,11 @@ function list() {
 function getList() {
 	return new Promise(function (fulfill, reject){
 		return ow.activations.list({
-            "docs":false,
-            "skip":0,
-            "limit":30,
-            "namespace":"_"
-        }).then(function (activations) {
+			"docs":false,
+			"skip":0,
+			"limit":30,
+			"namespace":"_"
+		}).then(function (activations) {
 			fulfill(activations);
 		}).catch(function(error) {
 			log.appendLine(error.toString())
@@ -98,13 +98,13 @@ function getAction(params) {
 	if (!props.validate()){
 		return;
 	}
-    
+
 	var startTime = new Date().getTime();
-    var callback = function(result) {
-        var totalTime = startTime - (new Date().getTime());
-        log.appendLine("\n"+JSON.stringify(result,  null, 4))
-        log.appendLine('>> completed in ' + (-totalTime) + 'ms');
-    };
+	var callback = function(result) {
+		var totalTime = startTime - (new Date().getTime());
+		log.appendLine("\n"+JSON.stringify(result,  null, 4))
+		log.appendLine('>> completed in ' + (-totalTime) + 'ms');
+	};
 
 	getActionImpl(params, "get", callback);
 }
@@ -115,19 +115,19 @@ function logsAction(params) {
 	if (!props.validate()){
 		return;
 	}
-    
+
 	var startTime = new Date().getTime();
-    var callback = function(result) {
-        var totalTime = startTime - (new Date().getTime());
-        var logs = result.logs;
-        log.appendLine("");
-        if (result.logs) {
-            for (var x =0; x <logs.length; x++) {
-                log.appendLine(logs[x]);
-            }
-        }
-        log.appendLine('>> completed in ' + (-totalTime) + 'ms');
-    };
+	var callback = function(result) {
+		var totalTime = startTime - (new Date().getTime());
+		var logs = result.logs;
+		log.appendLine("");
+		if (result.logs) {
+			for (var x =0; x <logs.length; x++) {
+				log.appendLine(logs[x]);
+			}
+		}
+		log.appendLine('>> completed in ' + (-totalTime) + 'ms');
+	};
 
 	getActionImpl(params, "logs", callback);
 }
@@ -138,13 +138,13 @@ function resultAction(params) {
 	if (!props.validate()){
 		return;
 	}
-    
+
 	var startTime = new Date().getTime();
-    var callback = function(result) {
-        var totalTime = startTime - (new Date().getTime());
-        log.appendLine("\n"+JSON.stringify(result.response.result,  null, 4))
-        log.appendLine('>> completed in ' + (-totalTime) + 'ms');
-    };
+	var callback = function(result) {
+		var totalTime = startTime - (new Date().getTime());
+		log.appendLine("\n"+JSON.stringify(result.response.result,  null, 4))
+		log.appendLine('>> completed in ' + (-totalTime) + 'ms');
+	};
 
 	getActionImpl(params, "result", callback);
 }
@@ -158,26 +158,26 @@ function getActionImpl(params, command, callback) {
 
 	vscode.window.showInputBox({placeHolder:'Enter an activation id:'})
 	.then(function(activationId){
-		
+
 		if (activationId == undefined) {
 			return;
 		}
-		
+
 		log.appendLine('\n$ wsk activation ' + command + ' ' + activationId);
-		
-        var activityInterval = setInterval(function() {
-            log.append('.');
-        },300);
-        
+
+		var activityInterval = setInterval(function() {
+			log.append('.');
+		},300);
+
 		var invocationParams = {
 			"activation": activationId,
-            "namespace": "_"
+			"namespace": "_"
 		}
 		ow.activations.get(invocationParams)
 		.then(function(result) {
-            clearInterval(activityInterval);
-            callback(result)
-        })
+			clearInterval(activityInterval);
+			callback(result)
+		})
 		.catch(function(error) {
 			clearInterval(activityInterval);
 			util.printOpenWhiskError(error);
@@ -191,12 +191,3 @@ module.exports = {
 	register: register,
 	list:list
 };
-
-
-
-
-
-
-
-
-
