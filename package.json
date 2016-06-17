@@ -2,7 +2,7 @@
   "name": "openwhisk",
   "displayName": "OpenWhisk",
   "description": "",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "AndrewTrice",
   "engines": {
     "vscode": "^0.10.10"
