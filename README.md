@@ -4,6 +4,8 @@ This is a prototype extension for Visual Studio Code https://code.visualstudio.c
 
 Download and run the installer for your platform from the [Downloads Section](#downloads).
 
+[![Build Status](https://travis-ci.org/openwhisk/openwhisk-vscode.svg?branch=master)](https://travis-ci.org/openwhisk/openwhisk-vscode)
+
 Preview of VS Code OpenWhisk extension here:
 
 [![VS Code OpenWhisk extension video](https://img.youtube.com/vi/aPsLXvphkro/0.jpg)](https://www.youtube.com/watch?v=aPsLXvphkro)
