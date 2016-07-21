@@ -526,7 +526,7 @@ function isSequence(result) {
 
 function initAction(params) {
 
-	vscode.window.showQuickPick( [NODE, NODE6, PYTHON, SWIFT], {placeHolder:'Select the type of action:'}).then( function (action) {
+	vscode.window.showQuickPick( [NODE, PYTHON, SWIFT], {placeHolder:'Select the type of action:'}).then( function (action) {
 
 		if (action == undefined) {
 			return;
