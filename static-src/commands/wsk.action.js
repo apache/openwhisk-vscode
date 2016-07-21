@@ -4,12 +4,21 @@ var vscode = require('vscode');
 let util = require('./util.js');
 let fs = require('fs');
 
+
 var importDirectory = '/wsk-import/';
 
 var log;
 var ow;
 var actions = [];
 var props;
+var context
+
+
+//supported OpenWhisk file formats
+var NODE = 'JavaScript',
+	NODE6 = 'JavaScript 6',
+	PYTHON = 'Python',
+	SWIFT = 'Swift';
 
 var sequenceComplete = {
 				description:'',
@@ -17,10 +26,11 @@ var sequenceComplete = {
 				label:'-- No Action --',
 			}//'--- - Sequence Complete ---';
 
-function register(_ow, context, _log, _props) {
+function register(_ow, _context, _log, _props) {
 	ow = _ow;
 	log = _log;
 	props = _props;
+	context = _context
 
 	var defaultDisposable = vscode.commands.registerCommand('extension.wsk.action', defaultAction);
 	var listDisposable = vscode.commands.registerCommand('extension.wsk.action.list', listAction);
@@ -461,6 +471,8 @@ function getAction(params) {
 				var fileName = result.name;
 				if (result.exec.kind.toString().search('swift') >= 0) {
 					fileName += '.swift'
+				} else if (result.exec.kind.toString().search('python') >= 0) {
+					fileName += '.py'
 				} else {
 					fileName += '.js'
 				}
@@ -514,30 +526,40 @@ function isSequence(result) {
 
 function initAction(params) {
 
-	var NODE = 'Node.js',
-		SWIFT = 'Swift';
-	vscode.window.showQuickPick( [NODE, SWIFT], {placeHolder:'Select the type of action:'}).then( function (action) {
+	vscode.window.showQuickPick( [NODE, NODE6, PYTHON, SWIFT], {placeHolder:'Select the type of action:'}).then( function (action) {
 
 		if (action == undefined) {
 			return;
 		}
 
-		var template = '';
-		if (action == NODE) {
-			template = nodeTemplate;
-		} else {
-			template = swiftTemplate;
-		}
-
 		log.show(true);
 		log.appendLine('\n$ wsk action init:' + action);
 
-		//todo: make it look for unique names or prompt for name
+		var templateName = action.toLowerCase()
+		templateName = templateName.replace(/\s/g, '');
+		templateName = context.extensionPath + "/static-src/templates/" + templateName + ".template"
+		var template = '';
+
+
+		var path = vscode.workspace.rootPath + importDirectory
+
+		fs.readFile( templateName, 'utf8', function (err,data) {
+			if (err) {
+				log.appendLine(err);
+				console.log(err)
+				return false;
+			}
+			
+			template = data.toString()
+
+			//todo: make it look for unique names or prompt for name
 
 			var buffer = new Buffer(template);
 			var fileName = 'newAction';
-			if (action == NODE) {
+			if (action == NODE || action == NODE6) {
 				fileName += '.js'
+			} else if (action == PYTHON) {
+				fileName += '.py'
 			} else {
 				fileName += '.swift'
 			}
@@ -570,6 +592,8 @@ function initAction(params) {
 					})
 				});
 			});
+
+		});
 	});
 }
 
@@ -623,61 +647,6 @@ function restAction(params) {
 	});
 }
 
-
-let nodeTemplate = 'var request = require(\'request\');\n' +
-	'\n' +
-	'function main(args) {\n' +
-	'    var url = \'https://httpbin.org/get\';\n' +
-	'    request.get(url, function(error, response, body) {\n' +
-	'        whisk.done({response: body});\n' +
-	'    });\n' +
-	'    return whisk.async();\n' +
-	'}\n';
-
-
-let swiftTemplate = '/**\n' +
-	' * Sample code using the experimental Swift 3 runtime\n' +
-	' * with links to KituraNet and GCD\n' +
-	' */\n' +
-	'\n' +
-	'import KituraNet\n' +
-	'import Dispatch\n' +
-	'import Foundation\n' +
-	'import SwiftyJSON\n' +
-	'\n' +
-	'func main(args:[String:Any]) -> [String:Any] {\n' +
-	'\n' +
-	'    // Force KituraNet call to run synchronously on a global queue\n' +
-	'    var str = \'No response\'\n' +
-	'    dispatch_sync(dispatch_get_global_queue(0, 0)) {\n' +
-	'\n' +
-	'            Http.get(\'https://httpbin.org/get\') { response in\n' +
-	'\n' +
-	'                do {\n' +
-	'                   str = try response!.readString()!\n' +
-	'                } catch {\n' +
-	'                    print(\'Error \(error)\')\n' +
-	'                }\n' +
-	'\n' +
-	'            }\n' +
-	'    }\n' +
-	'\n' +
-	'    // Assume string is JSON\n' +
-	'    print(\'Got string \(str)\')\n' +
-	'    var result:[String:Any]?\n' +
-	'\n' +
-	'    // Convert to NSData\n' +
-	'    let data = str.bridge().dataUsingEncoding(NSUTF8StringEncoding)!\n' +
-	'    do {\n' +
-	'        result = try NSJSONSerialization.jsonObject(with: data, options: []) as? [String: Any] + \n' +
-	'    } catch {\n' +
-	'        print(\'Error \(error)\')\n' +
-	'    }\n' +
-	'\n' +
-	'    // return, which should be a dictionary\n' +
-	'    print(\'Result is \(result!)\')\n' +
-	'    return result!\n' +
-	'}\n';
 
 
 module.exports = {
