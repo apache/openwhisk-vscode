@@ -1,6 +1,6 @@
 .vscode/**
-src/typings/**
-src/test/**
+static-src/typings/**
+static-src/test/**
 .gitignore
 jsconfig.json
 vsc-extension-quickstart.md
