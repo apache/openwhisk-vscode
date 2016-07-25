@@ -1,9 +1,9 @@
 {
   "name": "openwhisk",
   "displayName": "OpenWhisk",
-  "description": "",
+  "description": "A VSCode extension for OpenWhisk",
   "version": "0.0.3",
-  "publisher": "AndrewTrice",
+  "publisher": "IBM",
   "engines": {
     "vscode": "^0.10.10"
   },
@@ -11,45 +11,27 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.wsk.list",
-    "onCommand:extension.wsk.help",
-    "onCommand:extension.wsk.action",
-    "onCommand:extension.wsk.action.list",
-    "onCommand:extension.wsk.action.invoke",
-    "onCommand:extension.wsk.action.create",
-    "onCommand:extension.wsk.action.update",
-    "onCommand:extension.wsk.action.delete",
-    "onCommand:extension.wsk.action.get",
-    "onCommand:extension.wsk.action.init",
-    "onCommand:extension.wsk.action.rest",
-    "onCommand:extension.wsk.util.bluemix",
-    "onCommand:extension.wsk.util.docs",
-    "onCommand:extension.wsk.property.get",
-    "onCommand:extension.wsk.property.set",
-    "onCommand:extension.wsk.property.unset",
-    "onCommand:extension.wsk.action.sequence.create",
-    "onCommand:extension.wsk.trigger",
-    "onCommand:extension.wsk.trigger.list",
-    "onCommand:extension.wsk.trigger.create",
-    "onCommand:extension.wsk.trigger.update",
-    "onCommand:extension.wsk.trigger.delete",
-    "onCommand:extension.wsk.trigger.get",
-    "onCommand:extension.wsk.trigger.fire",
-    "onCommand:extension.wsk.rule",
-    "onCommand:extension.wsk.rule.list",
-    "onCommand:extension.wsk.rule.create",
-    "onCommand:extension.wsk.rule.update",
-    "onCommand:extension.wsk.rule.delete",
-    "onCommand:extension.wsk.rule.enable",
-    "onCommand:extension.wsk.rule.disable",
-    "onCommand:extension.wsk.rule.status",
-    "onCommand:extension.wsk.rule.get",
-    "onCommand:extension.wsk.activation",
-    "onCommand:extension.wsk.activation.list",
-    "onCommand:extension.wsk.activation.get",
-    "onCommand:extension.wsk.activation.logs",
-    "onCommand:extension.wsk.activation.result"
+    "*"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openwhisk/openwhisk-vscode.git"
+  },
+  "author": {
+    "name": "Andrew Trice",
+    "email": "amtrice@us.ibm.com"
+  },
+  "contributors": [
+    {
+      "name": "Jeff Sloyer",
+      "email": "jbsloyer@us.ibm.com"
+    }
+  ],
+  "icon": "github-assets/logo.png",
+  "galleryBanner": {
+    "color": "#CFB69A",
+    "theme": "light"
+  },
   "main": "./static-src/extension",
   "contributes": {
     "commands": [
