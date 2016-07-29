@@ -215,5 +215,10 @@
     "open": "0.0.5",
     "openwhisk": "https://github.com/triceam/openwhisk-client-js/tarball/master",
     "request-promise": "^3.0.0"
-  }
+  },
+},
+"keywords": [
+  "IBM",
+  "openwhisk"
+]
 }
