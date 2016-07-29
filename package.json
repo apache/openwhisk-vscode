@@ -1,224 +1,187 @@
 {
-  "name": "openwhisk",
-  "displayName": "OpenWhisk",
-  "description": "A VSCode extension for OpenWhisk",
-  "version": "0.0.3",
-  "publisher": "IBM",
-  "engines": {
-    "vscode": "^0.10.10"
-  },
-  "categories": [
-    "Languages",
-    "Other"
-  ],
-  "activationEvents": [
-    "*"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/openwhisk/openwhisk-vscode.git"
-  },
-  "author": {
-    "name": "Andrew Trice",
-    "email": "amtrice@us.ibm.com"
-  },
-  "contributors": [
-    {
-      "name": "Jeff Sloyer",
-      "email": "jbsloyer@us.ibm.com"
-    }
-  ],
-  "icon": "github-assets/logo.png",
-  "galleryBanner": {
-    "color": "#CFB69A",
-    "theme": "light"
-  },
-  "main": "./static-src/extension",
-  "contributes": {
-    "commands": [
-      {
-        "command": "extension.wsk.list",
-        "title": "wsk list"
-      },
-      {
-        "command": "extension.wsk.help",
-        "title": "wsk"
-      },
-      {
-        "command": "extension.wsk.help",
-        "title": "wsk help"
-      },
-      {
-        "command": "extension.wsk.action",
-        "title": "wsk action"
-      },
-      {
-        "command": "extension.wsk.action.list",
-        "title": "wsk action list"
-      },
-      {
-        "command": "extension.wsk.action.invoke",
-        "title": "wsk action invoke"
-      },
-      {
-        "command": "extension.wsk.action.create",
-        "title": "wsk action create"
-      },
-      {
-        "command": "extension.wsk.action.sequence.create",
-        "title": "wsk sequence create"
-      },
-      {
-        "command": "extension.wsk.action.update",
-        "title": "wsk action update"
-      },
-      {
-        "command": "extension.wsk.action.delete",
-        "title": "wsk action delete"
-      },
-      {
-        "command": "extension.wsk.action.get",
-        "title": "wsk action get"
-      },
-      {
-        "command": "extension.wsk.action.init",
-        "title": "wsk action init"
-      },
-      {
-        "command": "extension.wsk.action.rest",
-        "title": "wsk action REST"
-      },
+	"name": "openwhisk",
+	"displayName": "OpenWhisk",
+	"description": "A VSCode extension for OpenWhisk",
+	"version": "0.0.3",
+	"publisher": "IBM",
+	"engines": {
+		"vscode": "^0.10.10"
+	},
+	"categories": [
+		"Languages",
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/openwhisk/openwhisk-vscode.git"
+	},
+	"author": {
+		"name": "Andrew Trice",
+		"email": "amtrice@us.ibm.com"
+	},
+	"contributors": [{
+		"name": "Jeff Sloyer",
+		"email": "jbsloyer@us.ibm.com"
+	}],
+	"icon": "github-assets/logo.png",
+	"galleryBanner": {
+		"color": "#CFB69A",
+		"theme": "light"
+	},
+	"main": "./static-src/extension",
+	"contributes": {
+		"commands": [{
+				"command": "extension.wsk.list",
+				"title": "wsk list"
+			}, {
+				"command": "extension.wsk.help",
+				"title": "wsk"
+			}, {
+				"command": "extension.wsk.help",
+				"title": "wsk help"
+			}, {
+				"command": "extension.wsk.action",
+				"title": "wsk action"
+			}, {
+				"command": "extension.wsk.action.list",
+				"title": "wsk action list"
+			}, {
+				"command": "extension.wsk.action.invoke",
+				"title": "wsk action invoke"
+			}, {
+				"command": "extension.wsk.action.create",
+				"title": "wsk action create"
+			}, {
+				"command": "extension.wsk.action.sequence.create",
+				"title": "wsk sequence create"
+			}, {
+				"command": "extension.wsk.action.update",
+				"title": "wsk action update"
+			}, {
+				"command": "extension.wsk.action.delete",
+				"title": "wsk action delete"
+			}, {
+				"command": "extension.wsk.action.get",
+				"title": "wsk action get"
+			}, {
+				"command": "extension.wsk.action.init",
+				"title": "wsk action init"
+			}, {
+				"command": "extension.wsk.action.rest",
+				"title": "wsk action REST"
+			},
 
 
-      {
-        "command": "extension.wsk.util.bluemix",
-        "title": "wsk bluemix"
-      },
-      {
-        "command": "extension.wsk.util.docs",
-        "title": "wsk docs"
-      },
+			{
+				"command": "extension.wsk.util.bluemix",
+				"title": "wsk bluemix"
+			}, {
+				"command": "extension.wsk.util.docs",
+				"title": "wsk docs"
+			},
 
 
-      {
-        "command": "extension.wsk.property.get",
-        "title": "wsk property get"
-      },
-      {
-        "command": "extension.wsk.property.set",
-        "title": "wsk property set"
-      },
-      {
-        "command": "extension.wsk.property.unset",
-        "title": "wsk property unset"
-      },
+			{
+				"command": "extension.wsk.property.get",
+				"title": "wsk property get"
+			}, {
+				"command": "extension.wsk.property.set",
+				"title": "wsk property set"
+			}, {
+				"command": "extension.wsk.property.unset",
+				"title": "wsk property unset"
+			},
 
 
-      {
-        "command": "extension.wsk.trigger",
-        "title": "wsk trigger"
-      },
-      {
-        "command": "extension.wsk.trigger.list",
-        "title": "wsk trigger list"
-      },
-      {
-        "command": "extension.wsk.trigger.create",
-        "title": "wsk trigger create"
-      },
-      {
-        "command": "extension.wsk.trigger.update",
-        "title": "wsk trigger update"
-      },
-      {
-        "command": "extension.wsk.trigger.delete",
-        "title": "wsk trigger delete"
-      },
-      {
-        "command": "extension.wsk.trigger.get",
-        "title": "wsk trigger get"
-      },
-      {
-        "command": "extension.wsk.trigger.fire",
-        "title": "wsk trigger fire"
-      },
+			{
+				"command": "extension.wsk.trigger",
+				"title": "wsk trigger"
+			}, {
+				"command": "extension.wsk.trigger.list",
+				"title": "wsk trigger list"
+			}, {
+				"command": "extension.wsk.trigger.create",
+				"title": "wsk trigger create"
+			}, {
+				"command": "extension.wsk.trigger.update",
+				"title": "wsk trigger update"
+			}, {
+				"command": "extension.wsk.trigger.delete",
+				"title": "wsk trigger delete"
+			}, {
+				"command": "extension.wsk.trigger.get",
+				"title": "wsk trigger get"
+			}, {
+				"command": "extension.wsk.trigger.fire",
+				"title": "wsk trigger fire"
+			},
 
 
-      {
-        "command": "extension.wsk.rule",
-        "title": "wsk rule"
-      },
-      {
-        "command": "extension.wsk.rule.list",
-        "title": "wsk rule list"
-      },
-      {
-        "command": "extension.wsk.rule.create",
-        "title": "wsk rule create"
-      },
-      {
-        "command": "extension.wsk.rule.update",
-        "title": "wsk rule update"
-      },
-      {
-        "command": "extension.wsk.rule.delete",
-        "title": "wsk rule delete"
-      },
-      {
-        "command": "extension.wsk.rule.enable",
-        "title": "wsk rule enable"
-      },
-      {
-        "command": "extension.wsk.rule.disable",
-        "title": "wsk rule disable"
-      },
-      {
-        "command": "extension.wsk.rule.status",
-        "title": "wsk rule status"
-      },
-      {
-        "command": "extension.wsk.rule.get",
-        "title": "wsk rule get"
-      },
+			{
+				"command": "extension.wsk.rule",
+				"title": "wsk rule"
+			}, {
+				"command": "extension.wsk.rule.list",
+				"title": "wsk rule list"
+			}, {
+				"command": "extension.wsk.rule.create",
+				"title": "wsk rule create"
+			}, {
+				"command": "extension.wsk.rule.update",
+				"title": "wsk rule update"
+			}, {
+				"command": "extension.wsk.rule.delete",
+				"title": "wsk rule delete"
+			}, {
+				"command": "extension.wsk.rule.enable",
+				"title": "wsk rule enable"
+			}, {
+				"command": "extension.wsk.rule.disable",
+				"title": "wsk rule disable"
+			}, {
+				"command": "extension.wsk.rule.status",
+				"title": "wsk rule status"
+			}, {
+				"command": "extension.wsk.rule.get",
+				"title": "wsk rule get"
+			},
 
 
-      {
-        "command": "extension.wsk.activation",
-        "title": "wsk activation"
-      },
-      {
-        "command": "extension.wsk.activation.list",
-        "title": "wsk activation list"
-      },
-      {
-        "command": "extension.wsk.activation.get",
-        "title": "wsk activation get"
-      },
-      {
-        "command": "extension.wsk.activation.logs",
-        "title": "wsk activation logs"
-      },
-      {
-        "command": "extension.wsk.activation.result",
-        "title": "wsk activation result"
-      }
+			{
+				"command": "extension.wsk.activation",
+				"title": "wsk activation"
+			}, {
+				"command": "extension.wsk.activation.list",
+				"title": "wsk activation list"
+			}, {
+				"command": "extension.wsk.activation.get",
+				"title": "wsk activation get"
+			}, {
+				"command": "extension.wsk.activation.logs",
+				"title": "wsk activation logs"
+			}, {
+				"command": "extension.wsk.activation.result",
+				"title": "wsk activation result"
+			}
 
-    ]
-  },
-  "scripts": {
-     "postinstall": "rm -rf ./node_modules/openwhisk/test/"
-  },
-  "devDependencies": {
-    "vscode": "^0.11.0"
-  },
-  "dependencies": {
-    "open": "0.0.5",
-    "openwhisk": "https://github.com/triceam/openwhisk-client-js/tarball/master",
-    "request-promise": "^3.0.0"
-  },
-},
-"keywords": [
-  "IBM",
-  "openwhisk"
-]
+		]
+	},
+	"scripts": {
+		"postinstall": "rm -rf ./node_modules/openwhisk/test/"
+	},
+	"devDependencies": {
+		"vscode": "^0.11.0"
+	},
+	"dependencies": {
+		"open": "0.0.5",
+		"openwhisk": "https://github.com/triceam/openwhisk-client-js/tarball/master",
+		"request-promise": "^3.0.0"
+	},
+	"keywords": [
+		"IBM",
+		"openwhisk"
+	]
 }
