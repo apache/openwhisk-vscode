@@ -98,8 +98,6 @@
         "command": "extension.wsk.util.docs",
         "title": "wsk docs"
       },
-
-
       {
         "command": "extension.wsk.property.get",
         "title": "wsk property get"
@@ -112,8 +110,6 @@
         "command": "extension.wsk.property.unset",
         "title": "wsk property unset"
       },
-
-
       {
         "command": "extension.wsk.trigger",
         "title": "wsk trigger"
@@ -142,8 +138,6 @@
         "command": "extension.wsk.trigger.fire",
         "title": "wsk trigger fire"
       },
-
-
       {
         "command": "extension.wsk.rule",
         "title": "wsk rule"
@@ -180,8 +174,6 @@
         "command": "extension.wsk.rule.get",
         "title": "wsk rule get"
       },
-
-
       {
         "command": "extension.wsk.activation",
         "title": "wsk activation"
@@ -215,5 +207,10 @@
     "open": "0.0.5",
     "openwhisk": "https://github.com/triceam/openwhisk-client-js/tarball/master",
     "request-promise": "^3.0.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/openwhisk/openwhisk-vscode/issues"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/openwhisk/openwhisk-vscode/blob/master/README.md"
 }
