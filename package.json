@@ -183,5 +183,10 @@
 	"keywords": [
 		"IBM",
 		"openwhisk"
-	]
+	],
+  "bugs": {
+    "url": "https://github.com/openwhisk/openwhisk-vscode/issues"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/openwhisk/openwhisk-vscode/blob/master/README.md"
 }
