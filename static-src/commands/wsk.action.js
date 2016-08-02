@@ -468,6 +468,8 @@ function getAction(params) {
 
 				var buffer = new Buffer(result.exec.code);
 				var fileName = result.name;
+				
+				var fileExt = '';
 				if (result.exec.kind.toString().search('swift') >= 0) {
 					fileName += '.swift'
 				} else if (result.exec.kind.toString().search('python') >= 0) {
@@ -475,15 +477,16 @@ function getAction(params) {
 				} else {
 					fileName += '.js'
 				}
+
 				var path = vscode.workspace.rootPath + importDirectory
 
 				if (!fs.existsSync(path)){
 					fs.mkdirSync(path);
 				}
 
-				path += fileName;
+				var filePath = getUniqueFilename(path, fileName, fileExt);
 
-				fs.open(path, 'w', function(err, fd) {
+				fs.open(filePath, 'w', function(err, fd) {
 					if (err) {
 						throw 'error opening file: ' + err;
 					}
@@ -493,11 +496,11 @@ function getAction(params) {
 						fs.close(fd, function() {
 							//console.log('file written');
 
-							vscode.workspace.openTextDocument(path)
+							vscode.workspace.openTextDocument(filePath)
 							.then(function(document) {
 								vscode.window.showTextDocument(document);
 								vscode.window.showInformationMessage('Successfully imported ' + importDirectory + fileName);
-								log.appendLine('Successfully imported file to ' + path);
+								log.appendLine('Successfully imported file to ' + filePath);
 							});
 
 						})
@@ -559,12 +562,13 @@ function initAction(params) {
 
 			var buffer = new Buffer(template);
 			var fileName = 'newAction';
+			var fileExt = '';
 			if (action == NODE || action == NODE6) {
-				fileName += '.js'
+				fileExt += '.js'
 			} else if (action == PYTHON) {
-				fileName += '.py'
+				fileExt += '.py'
 			} else {
-				fileName += '.swift'
+				fileExt += '.swift'
 			}
 
 			var path = vscode.workspace.rootPath + importDirectory
@@ -572,10 +576,10 @@ function initAction(params) {
 			if (!fs.existsSync(path)){
 				fs.mkdirSync(path);
 			}
+			
+			var filePath = getUniqueFilename(path, fileName, fileExt);
 
-			path += fileName;
-
-			fs.open(path, 'w', function(err, fd) {
+			fs.open(filePath, 'w', function(err, fd) {
 				if (err) {
 					throw 'error opening file: ' + err;
 				}
@@ -585,11 +589,11 @@ function initAction(params) {
 					fs.close(fd, function() {
 						//console.log('file written');
 
-						vscode.workspace.openTextDocument(path)
+						vscode.workspace.openTextDocument(filePath)
 						.then(function(document) {
 							//console.log(document)
 							vscode.window.showTextDocument(document);
-							log.appendLine('Created new action using ' + action + ' template');
+							log.appendLine('Created new action using ' + action + ' template as ' + filePath);
 						});
 
 					})
@@ -663,6 +667,25 @@ function hasValidProjectRoot() {
 	return true;
 }
 
+function getUniqueFilename(path, fileName, fileExt) {
+
+	var unique = false;
+	var attempt = 0;
+	while (!unique) {
+		var suffix = (attempt > 0) ? (attempt+1):"";
+		var uniquePath = path + fileName + suffix + fileExt;
+
+		//if file exists, updated attempt count and try again in the loop
+		if (fs.existsSync(uniquePath)) {
+			attempt++;
+		}
+		else {
+			var unique = true;
+			return uniquePath;
+		}
+	}
+	return undefined;
+}
 
 module.exports = {
 	register: register,
