@@ -415,8 +415,7 @@ function getAction(params) {
 		return;
 	}
 
-	if (vscode.workspace.rootPath == undefined) {
-		log.appendLine('You must specify a project folder before you can import actions from OpenWhisk.  Please use the \'File\' menu, select \'Open\', then select a folder for your project.');
+	if (!hasValidProjectRoot()) {
 		return;
 	}
 
@@ -525,6 +524,10 @@ function isSequence(result) {
 }
 
 function initAction(params) {
+
+	if (!hasValidProjectRoot()) {
+		return;
+	}
 
 	vscode.window.showQuickPick( [NODE, PYTHON, SWIFT], {placeHolder:'Select the type of action:'}).then( function (action) {
 
@@ -647,6 +650,18 @@ function restAction(params) {
 	});
 }
 
+function hasValidProjectRoot() {
+	if (vscode.workspace.rootPath == undefined) {
+		var message = 'You must specify a project folder before you can import actions from OpenWhisk.  Please use the \'File\' menu, select \'Open\', then select a folder for your project.';
+		
+		log.show();
+		log.appendLine(message);
+
+		vscode.window.showWarningMessage(message)
+		return false;
+	}
+	return true;
+}
 
 
 module.exports = {
