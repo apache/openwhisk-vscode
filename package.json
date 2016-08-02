@@ -2,7 +2,7 @@
 	"name": "openwhisk",
 	"displayName": "OpenWhisk",
 	"description": "A VSCode extension for OpenWhisk",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"publisher": "IBM",
 	"engines": {
 		"vscode": "^0.10.10"
