@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var zip = require('gulp-vinyl-zip').zip;
-require('./build/gulpfile.hygiene');
 
 gulp.task('build-zip', () => {
 	const platform = process.platform;
