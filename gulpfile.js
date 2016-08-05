@@ -9,9 +9,9 @@ gulp.task('build-zip', () => {
 	}
 
 	return gulp.src([
-		'out/commands/**',
-		'out/templates/**',
-		'out/extension.js',
+		'static-src/commands/**',
+		'static-src/templates/**',
+		'static-src/extension.js',
 		'node_modules/**',
 		'LICENSE',
 		'package.json',
