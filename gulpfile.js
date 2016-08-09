@@ -4,10 +4,6 @@ var zip = require('gulp-vinyl-zip').zip;
 gulp.task('build-zip', () => {
 	const platform = process.platform;
 
-	if (platform !== 'darwin' || platform !== 'win32') {
-		//TODO logic needed here for linux
-	}
-
 	return gulp.src([
 		'static-src/commands/**',
 		'static-src/templates/**',
@@ -16,7 +12,9 @@ gulp.task('build-zip', () => {
 		'LICENSE',
 		'package.json',
 		'github-assets/**',
-		'README.md'
+		'README.md',
+		'!node_modules/.bin/**',
+		'!node_modules/**/.bin'
 	], { base: '.' })
 		.pipe(zip(`openwhisk-vscode-${platform}.zip`))
 		.pipe(gulp.dest('./out'));
