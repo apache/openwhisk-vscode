@@ -201,6 +201,11 @@ function debugAction(params) {
 		wskdb = spawn('wskdb', []);
 		wskdb.stdout.setEncoding('utf-8');
 		wskdb.stdin.setEncoding('utf-8');
+
+		wskdb.on('error', (error) => {
+			console.error(error);
+			log.appendLine("Unable to invoke the wskdb debugger.  Please make sure that you have it installed.");
+		})
 		
 		wskdb.stderr.on('data', (data) => {
 			console.log(`stderr: ${data}`);
@@ -292,8 +297,7 @@ function debugAction(params) {
 
 		log.show(true);
 		attachDebugger();
-
-
+	
 	});
 }
 
