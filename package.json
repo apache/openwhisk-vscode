@@ -52,6 +52,9 @@
 				"command": "extension.wsk.action.invoke",
 				"title": "wsk action invoke"
 			}, {
+				"command": "extension.wsk.action.debug",
+				"title": "wsk action debug"
+			}, {
 				"command": "extension.wsk.action.create",
 				"title": "wsk action create"
 			}, {
@@ -177,7 +180,7 @@
 	},
 	"dependencies": {
 		"open": "0.0.5",
-		"openwhisk": "https://github.com/triceam/openwhisk-client-js/tarball/master",
+		"openwhisk": "3.1.0",
 		"request-promise": "^3.0.0"
 	},
 	"keywords": [

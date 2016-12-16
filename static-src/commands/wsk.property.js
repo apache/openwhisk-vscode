@@ -63,7 +63,7 @@ function register(_ow, context, _log) {
 
 function validate() {
 	log.show(true);
-	if (config.auth =='' || config.namespace =='') {
+	if (config.auth =='') {
 		log.show(true);
 		log.appendLine('Please check OpenWhisk config. Use \'wsk property set\' to specify missing values. ')
 		getAction();

@@ -3,6 +3,7 @@
 var vscode = require('vscode');
 let util = require('./util.js');
 let fs = require('fs');
+let spawn = require('child_process').spawn;
 
 
 var importDirectory = '/wsk-import/';
@@ -35,6 +36,7 @@ function register(_ow, _context, _log, _props) {
 	var defaultDisposable = vscode.commands.registerCommand('extension.wsk.action', defaultAction);
 	var listDisposable = vscode.commands.registerCommand('extension.wsk.action.list', listAction);
 	var invokeDisposable = vscode.commands.registerCommand('extension.wsk.action.invoke', invokeAction);
+	var debugDisposable = vscode.commands.registerCommand('extension.wsk.action.debug', debugAction);
 	var createDisposable = vscode.commands.registerCommand('extension.wsk.action.create', createAction);
 	var updateDisposable = vscode.commands.registerCommand('extension.wsk.action.update', updateAction);
 	var deleteDisposable = vscode.commands.registerCommand('extension.wsk.action.delete', deleteAction);
@@ -43,7 +45,7 @@ function register(_ow, _context, _log, _props) {
 	var restDisposable = vscode.commands.registerCommand('extension.wsk.action.rest', restAction);
 	var createSequenceDisposable = vscode.commands.registerCommand('extension.wsk.action.sequence.create', createSequenceAction);
 
-	context.subscriptions.push(defaultDisposable, listDisposable, invokeDisposable, createDisposable, updateDisposable, deleteDisposable, getDisposable, initDisposable, createSequenceDisposable, restDisposable);
+	context.subscriptions.push(defaultDisposable, listDisposable, invokeDisposable, debugDisposable, createDisposable, updateDisposable, deleteDisposable, getDisposable, initDisposable, createSequenceDisposable, restDisposable);
 }
 
 function defaultAction(params) {
@@ -121,6 +123,43 @@ function invokeAction(params) {
 		return;
 	}
 
+	selectActionAndRequestParameters( function(namespace, actionToInvoke, parametersString) {
+	
+		log.show(true);
+		log.appendLine('\n$ wsk action invoke ' + actionToInvoke + ' ' + parametersString);
+
+		var activityInterval = setInterval(function() {
+			log.append('.');
+		},300);
+
+		var startTime = new Date().getTime();
+		var invocationParams = {
+			actionName: actionToInvoke,
+			blocking:true,
+			namespace: namespace
+		}
+
+		if (parametersString.length>0) {
+			invocationParams.params = util.parseParametersString(parametersString);
+		}
+		ow.actions.invoke(invocationParams)
+		.then(function(result) {
+			var totalTime = startTime - (new Date().getTime());
+			clearInterval(activityInterval);
+			log.appendLine('\n'+JSON.stringify(result.response, null, 4));
+			log.appendLine('>> completed in ' + (-totalTime) + 'ms');
+		})
+		.catch(function(error) {
+			clearInterval(activityInterval);
+			util.printOpenWhiskError(error);
+		});
+				
+	})
+}
+
+
+function selectActionAndRequestParameters(callback) {
+
 	vscode.window.showQuickPick( getListAsStringArray(), {placeHolder:'Select an action.'}).then( function (action) {
 
 		if (action == undefined) {
@@ -144,35 +183,117 @@ function invokeAction(params) {
 
 			props.set(actionToInvoke, pString, true);
 
-			log.show(true);
-			log.appendLine('\n$ wsk action invoke ' + actionToInvoke + ' ' + pString);
-
-			var activityInterval = setInterval(function() {
-				log.append('.');
-			},300);
-
-			var startTime = new Date().getTime();
-			var invocationParams = {
-				actionName: actionToInvoke,
-				blocking:true,
-				namespace: namespace
-			}
-
-			if (pString.length>0) {
-				invocationParams.params = util.parseParametersString(pString);
-			}
-			ow.actions.invoke(invocationParams)
-			.then(function(result) {
-				var totalTime = startTime - (new Date().getTime());
-				clearInterval(activityInterval);
-				log.appendLine('\n'+JSON.stringify(result.response, null, 4));
-				log.appendLine('>> completed in ' + (-totalTime) + 'ms');
-			})
-			.catch(function(error) {
-				clearInterval(activityInterval);
-				util.printOpenWhiskError(error);
-			});
+			callback( namespace, actionToInvoke, parametersString )
 		});
+	});
+
+}
+
+
+var wskdb = undefined;
+function debugAction(params) {
+
+	if (!props.validate()){
+		return;
+	}
+	selectActionAndRequestParameters( function(namespace, actionToInvoke, parametersString) {
+
+		wskdb = spawn('wskdb', []);
+		wskdb.stdout.setEncoding('utf-8');
+		wskdb.stdin.setEncoding('utf-8');
+		
+		wskdb.stderr.on('data', (data) => {
+			console.log(`stderr: ${data}`);
+			log.appendLine("ERROR:" + data.toString())
+			wskdb.kill();
+		});
+
+		wskdb.on('close', (code) => {
+			console.log(`child process exited with code ${code}`);
+			wskdb = undefined;
+		});
+
+		var OK = /ok[\n|.*]*?\(wskdb\)/;
+		var ERROR = /^Error\:/;
+
+		var exit = function() {
+			wskdb.stdout.removeAllListeners("data")
+			wskdb.stdin.write("exit\n");
+		}
+
+		var attachDebugger = function() {
+			log.appendLine('\n$ attaching wskdb to ' + actionToInvoke);
+
+			wskdb.stdout.removeAllListeners("data")
+			wskdb.stdin.write("attach " + actionToInvoke + "\n");
+			
+			var stdoutData;
+			wskdb.stdout.on('data', (data) => {
+				//console.log(`stdout: ${data}`);
+
+				if (stdoutData == undefined) {
+					stdoutData = data; 
+				} else {
+					stdoutData += data;
+				}
+
+				var str = data.toString();
+				if (stdoutData.match(OK)) {
+					invokeAction();
+				} else if (stdoutData.match(ERROR)) {
+					log.appendLine(str);
+					exit();
+				}
+			});
+		}
+
+		var invokeAction = function() {
+
+			log.appendLine('$ invoking wskdb with ' + actionToInvoke + ' ' + parametersString);
+			wskdb.stdout.removeAllListeners("data")
+			var stdinData = "invoke " + actionToInvoke + ' ' + parametersString;
+			wskdb.stdin.write(stdinData + "\n");
+			
+			var stdoutData;
+			var wroteOutput = false;
+			
+			wskdb.stdout.on('data', (data) => {
+				//console.log(`stdout: ${data}`);
+
+				var str = data.toString();
+
+				if (stdoutData == undefined) {
+					stdoutData = data; 
+				} else {
+					stdoutData += data;
+				}
+
+				//clean garbage that sometimes gets shoved into stdout when writing to stdin
+				if (stdoutData.indexOf(stdinData) >= 0) {
+					stdoutData = stdoutData.substring( stdoutData.indexOf(stdinData)+stdinData.length+1 )
+				}
+
+				//if contains a complete json doc, print it
+				if (stdoutData.match(/{([^}]*)}/) && !wroteOutput) {
+					var outString = stdoutData.substring(stdoutData.indexOf("{"))
+					outString = outString.substring(0, outString.lastIndexOf("}")+1);
+					log.appendLine(outString);
+					wroteOutput = true
+				}
+				
+				if (stdoutData.match(OK)) {
+					exit();
+				} else if (stdoutData.match(ERROR)) {
+					log.appendLine(str);
+					exit();
+				}
+			});
+		}
+
+		log.show(true);
+		attachDebugger();
+
+
 	});
 }
 
