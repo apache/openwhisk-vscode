@@ -1,38 +1,40 @@
 {
-	"name": "openwhisk",
-	"displayName": "OpenWhisk",
-	"description": "A VSCode extension for OpenWhisk",
-	"version": "0.0.4",
-	"publisher": "IBM",
-	"engines": {
-		"vscode": "^0.10.10"
-	},
-	"categories": [
-		"Languages",
-		"Other"
-	],
-	"activationEvents": [
-		"*"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/openwhisk/openwhisk-vscode.git"
-	},
-	"author": {
-		"name": "Andrew Trice",
-		"email": "amtrice@us.ibm.com"
-	},
-	"contributors": [{
-		"name": "Jeff Sloyer",
-		"email": "jbsloyer@us.ibm.com"
-	}],
-	"icon": "github-assets/logo.png",
-	"galleryBanner": {
-		"color": "#CFB69A",
-		"theme": "light"
-	},
-	"main": "./static-src/extension",
-	"contributes": {
+  "name": "openwhisk",
+  "displayName": "OpenWhisk",
+  "description": "A VSCode extension for OpenWhisk",
+  "version": "0.0.4",
+  "publisher": "IBM",
+  "engines": {
+    "vscode": "^0.10.10"
+  },
+  "categories": [
+    "Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openwhisk/openwhisk-vscode.git"
+  },
+  "author": {
+    "name": "Andrew Trice",
+    "email": "amtrice@us.ibm.com"
+  },
+  "contributors": [
+    {
+      "name": "Jeff Sloyer",
+      "email": "jbsloyer@us.ibm.com"
+    }
+  ],
+  "icon": "github-assets/logo.png",
+  "galleryBanner": {
+    "color": "#CFB69A",
+    "theme": "light"
+  },
+  "main": "./static-src/extension",
+  "contributes": {
 		"commands": [{
 				"command": "extension.wsk.list",
 				"title": "wsk list"
@@ -169,24 +171,25 @@
 				"command": "extension.wsk.activation.result",
 				"title": "wsk activation result"
 			}
-
 		]
 	},
-	"scripts": {
-		"postinstall": "rm -rf ./node_modules/openwhisk/test/"
-	},
-	"devDependencies": {
-		"vscode": "^0.11.0"
-	},
-	"dependencies": {
-		"open": "0.0.5",
-		"openwhisk": "3.1.0",
-		"request-promise": "^3.0.0"
-	},
-	"keywords": [
-		"IBM",
-		"openwhisk"
-	],
+  "scripts": {
+    "postinstall": "rm -rf ./node_modules/openwhisk/test/"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-vinyl-zip": "^1.2.2",
+    "vscode": "^0.11.0"
+  },
+  "dependencies": {
+    "open": "0.0.5",
+    "openwhisk": "https://github.com/triceam/openwhisk-client-js/tarball/master",
+    "request-promise": "^3.0.0"
+  },
+  "keywords": [
+    "IBM",
+    "openwhisk"
+  ],
   "bugs": {
     "url": "https://github.com/openwhisk/openwhisk-vscode/issues"
   },
