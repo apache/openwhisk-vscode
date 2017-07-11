@@ -1,21 +1,38 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 var gulp = require('gulp');
 var zip = require('gulp-vinyl-zip').zip;
 
 gulp.task('build-zip', () => {
-	const platform = process.platform;
+    const platform = process.platform;
 
-	return gulp.src([
-		'static-src/commands/**',
-		'static-src/templates/**',
-		'static-src/extension.js',
-		'node_modules/**',
-		'LICENSE',
-		'package.json',
-		'github-assets/**',
-		'README.md',
-		'!node_modules/.bin/**',
-		'!node_modules/**/.bin'
-	], { base: '.' })
-		.pipe(zip(`openwhisk-vscode-${platform}.zip`))
-		.pipe(gulp.dest('./out'));
+    return gulp.src([
+        'static-src/commands/**',
+        'static-src/templates/**',
+        'static-src/extension.js',
+        'node_modules/**',
+        'LICENSE',
+        'package.json',
+        'github-assets/**',
+        'README.md',
+        '!node_modules/.bin/**',
+        '!node_modules/**/.bin'
+    ], { base: '.' })
+        .pipe(zip(`openwhisk-vscode-${platform}.zip`))
+        .pipe(gulp.dest('./out'));
 });
