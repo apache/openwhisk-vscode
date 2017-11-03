@@ -1,26 +1,12 @@
 /**
   *
-  * main() will be invoked when you Run This Action.
-  * 
-  * @param Whisk actions accept a single parameter,
-  *        which must be a JSON object.
+  * main() will be invoked when you Run This Action
   *
-  * In this case, the params variable will look like:
-  *     { "message": "xxxx" }
+  * @param Cloud Functions actions accept a single parameter, which must be a JSON object.
   *
-  * @return The return value must also be JSON.
-  *         It will be the output of this action.
-  *         You can also return whisk.asyn(), and 
-  *         later call whisk.done() for asynchronus operations
+  * @return The output of this action, which must be a JSON object.
   *
   */
-
-var request = require('request');
-
-function main(args) {
-    var url = 'https://httpbin.org/get';
-    request.get(url, function(error, response, body) {
-        whisk.done({response: body});
-    });
-    return whisk.async();
+function main(params) {
+	return { message: 'Hello World' };
 }

@@ -92,6 +92,9 @@ function printOpenWhiskError(error) {
             log.appendLine(error.error.logs[x]);
         }
     }
+    else if (error.error.error) {
+        log.appendLine(error.error.error);
+    }
 }
 
 function parseParametersString(parameterString) {
