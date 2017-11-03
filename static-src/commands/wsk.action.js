@@ -35,6 +35,7 @@ var context
 //supported OpenWhisk file formats
 var NODE = 'JavaScript',
     NODE6 = 'JavaScript 6',
+    PHP = 'PHP',
     PYTHON = 'Python',
     SWIFT = 'Swift';
 
@@ -349,10 +350,24 @@ function createAction(params) {
         };
 
         var swiftExt = '.swift';
+        var pyExt = '.py';
+        var phpExt = '.php';
         var lastIndex = vscode.window.activeTextEditor.document.uri.fsPath.lastIndexOf(swiftExt);
         if (lastIndex == vscode.window.activeTextEditor.document.uri.fsPath.length - swiftExt.length) {
-            //it's a swift file, handle it differently
             options.action = { exec: { kind: 'swift:3', code: options.action }}
+        } else {
+
+            lastIndex = vscode.window.activeTextEditor.document.uri.fsPath.lastIndexOf(pyExt);
+            if (lastIndex == vscode.window.activeTextEditor.document.uri.fsPath.length - pyExt.length) {
+                options.action = { exec: { kind: 'python:3', code: options.action }}
+            }else {
+                lastIndex = vscode.window.activeTextEditor.document.uri.fsPath.lastIndexOf(phpExt);
+                if (lastIndex == vscode.window.activeTextEditor.document.uri.fsPath.length - phpExt.length) {
+                    options.action = { exec: { kind: 'php:7.1', code: options.action }}
+                }else {
+                    options.action = { exec: { kind: 'nodejs:6', code: options.action }}
+                }
+            }
         }
 
         ow.actions.create(options)
@@ -408,10 +423,24 @@ function updateAction(params) {
                 };
 
                 var swiftExt = '.swift';
+                var pyExt = '.py';
+                var phpExt = '.php';
                 var lastIndex = vscode.window.activeTextEditor.document.uri.fsPath.lastIndexOf(swiftExt);
                 if (lastIndex == vscode.window.activeTextEditor.document.uri.fsPath.length - swiftExt.length) {
-                    //it's a swift file, handle it differently
                     options.action = { exec: { kind: 'swift:3', code: options.action }}
+                } else {
+
+                    lastIndex = vscode.window.activeTextEditor.document.uri.fsPath.lastIndexOf(pyExt);
+                    if (lastIndex == vscode.window.activeTextEditor.document.uri.fsPath.length - pyExt.length) {
+                        options.action = { exec: { kind: 'python:3', code: options.action }}
+                    }else {
+                        lastIndex = vscode.window.activeTextEditor.document.uri.fsPath.lastIndexOf(phpExt);
+                        if (lastIndex == vscode.window.activeTextEditor.document.uri.fsPath.length - phpExt.length) {
+                            options.action = { exec: { kind: 'php:7.1', code: options.action }}
+                        }else {
+                            options.action = { exec: { kind: 'nodejs:6', code: options.action }}
+                        }
+                    }
                 }
 
                 ow.actions.update(options)
@@ -476,7 +505,7 @@ function createSequenceAction(params) {
 
                             var options = {
                                 actionName: action,
-                                action: { exec: { kind: 'nodejs', code: pipeCode },
+                                action: { exec: { kind: 'nodejs:6', code: pipeCode },
                                 parameters:[{
                                         'key': '_actions',
                                         'value': sequenceActions
@@ -674,7 +703,7 @@ function initAction(params) {
         return;
     }
 
-    vscode.window.showQuickPick( [NODE, PYTHON, SWIFT], {placeHolder:'Select the type of action:'}).then( function (action) {
+    vscode.window.showQuickPick( [NODE, PHP, PYTHON, SWIFT], {placeHolder:'Select the type of action:'}).then( function (action) {
 
         if (action == undefined) {
             return;
@@ -707,6 +736,8 @@ function initAction(params) {
             var fileExt = '';
             if (action == NODE || action == NODE6) {
                 fileExt += '.js'
+            } else if (action == PHP) {
+                fileExt += '.php'
             } else if (action == PYTHON) {
                 fileExt += '.py'
             } else {
