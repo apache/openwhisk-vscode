@@ -1,3 +1,4 @@
+<?php
 /**
   *
   * main() will be invoked when you Run This Action
@@ -7,6 +8,10 @@
   * @return The output of this action, which must be a JSON object.
   *
   */
-function main(params) {
-	return { message: 'Hello World' };
+function main(array $args) : array
+{
+    $name = $args["message"] ?? "stranger";
+    $greeting = "Hello $name!";
+    echo $greeting;
+    return ["greeting" => $greeting];
 }
